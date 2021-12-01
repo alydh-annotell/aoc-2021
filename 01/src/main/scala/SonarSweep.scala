@@ -9,6 +9,6 @@ object SonarSweep {
   def sweep(depths: Seq[Int]): Int =
     depths
       .sliding(2)
-      .map { case Seq(x, y) => x < y }
-      .count(_ == true)
+      .map(_.reduce(_ - _))
+      .count(0 < _)
 }
