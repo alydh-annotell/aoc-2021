@@ -5,14 +5,14 @@ object Dive {
       .reduce(accPosition1)
       .multiply
 
-  def accPosition1(acc: position1, elem: position1): position1 =
-    position1(acc.hor + elem.hor, acc.depth + elem.depth)
+  def accPosition1(acc: position, elem: position): position =
+    position(acc.hor + elem.hor, acc.depth + elem.depth)
 
-  def parseInstruction1(instruction: String): position1 =
+  def parseInstruction1(instruction: String): position =
     instruction.split(" ") match {
-      case Array("forward", x) => position1(x.toInt, 0)
-      case Array("up", x)      => position1(0, -x.toInt)
-      case Array("down", x)    => position1(0, x.toInt)
+      case Array("forward", x) => position(hor = x.toInt)
+      case Array("up", x)      => position(depth = -x.toInt)
+      case Array("down", x)    => position(depth = x.toInt)
     }
 
   def solve2(instructions: List[String]): Int =
@@ -21,25 +21,21 @@ object Dive {
       .reduce(accPosition2)
       .multiply
 
-  def accPosition2(acc: position2, elem: position2): position2 =
-    position2(
+  def accPosition2(acc: position, elem: position): position =
+    position(
       acc.hor + elem.hor,
       acc.depth + (acc.aim * elem.hor),
       acc.aim + elem.aim
     )
 
-  def parseInstruction2(instruction: String): position2 =
+  def parseInstruction2(instruction: String): position =
     instruction.split(" ") match {
-      case Array("forward", x) => position2(x.toInt, 0, 0)
-      case Array("up", x)      => position2(0, 0, -x.toInt)
-      case Array("down", x)    => position2(0, 0, x.toInt)
+      case Array("forward", x) => position(hor = x.toInt)
+      case Array("up", x)      => position(aim = -x.toInt)
+      case Array("down", x)    => position(aim = x.toInt)
     }
 
-  case class position1(hor: Int, depth: Int) {
-    def multiply: Int = this.hor * this.depth
-  }
-
-  case class position2(hor: Int, depth: Int, aim: Int) {
+  case class position(hor: Int = 0, depth: Int = 0, aim: Int = 0) {
     def multiply: Int = this.hor * this.depth
   }
 
